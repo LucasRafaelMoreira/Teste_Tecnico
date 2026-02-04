@@ -5,36 +5,48 @@ import MoviesCard from "../components/MoviesCard";
 const searchURL = import.meta.env.VITE_SEARCH;
 const apiKey = import.meta.env.VITE_API_KEY
 
-import '../css/MovieGrid.css'
+import styles from '../css/MovieGrid.module.scss'
 import type { Movie } from "../types/MovieTypes";
 
 const Search = () => {
 
   const [searchParams] = useSearchParams();
 
-  const [movies, setMovies] = useState<Array<Movie>>([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const query = searchParams.get("q");
 
   const getSearchedMovies = async (url: RequestInfo | URL) => {
-  
+    try {
+      setLoading(true);
       const res = await fetch(url);
+      if (!res.ok) {
+        throw new Error('Erro ao buscar filmes');
+      }
       const data = await res.json();
-  
       setMovies(data.results);
-    };
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erro desconhecido');
+    } finally {
+      setLoading(false);
+    }
+  };
   
-    useEffect(() => {      
-      const searchedWithQueryUrl = `${searchURL}?${apiKey}&query=${query}&language=pt-BR&page=1`;
+  useEffect(() => {      
+    const searchedWithQueryUrl = `${searchURL}?${apiKey}&query=${query}&language=pt-BR&page=1`;
 
-      getSearchedMovies(searchedWithQueryUrl);
-    }, [query])
+    getSearchedMovies(searchedWithQueryUrl);
+  }, [query])
 
   return (
-    <div className="container">
-      <h2 className="title">Resultados para: <span className="query-text">{query}</span></h2>
-      <div className="movies-container">
-        {movies.length === 0 && <p>Carregando...</p>}
-        {movies.length > 0 && movies.map((movie) => (
+    <div className={styles.container}>
+      <h2 className={styles.title}>Resultados para: <span className={styles['query-text']}>{query}</span></h2>
+      <div className={styles['movies-container']}>
+        {loading && <p>Carregando...</p>}
+        {error && <p className={styles.error}>Erro: {error}</p>}
+        {!loading && !error && movies.length === 0 && <p>Nenhum resultado encontrado</p>}
+        {!loading && !error && movies.map((movie) => (
           <MoviesCard key={movie.id} movie={movie} showLink={true} />
         ))}
       </div>

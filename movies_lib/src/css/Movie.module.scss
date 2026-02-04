@@ -1,5 +1,5 @@
 .movie-page {
-    color: #FFF;
+    color: var(--text-primary);
     display: flex;
     flex-direction: column;
     max-width: 600px;
@@ -8,7 +8,7 @@
 
 .movie-page svg {
     font-size: 1.5rem;;
-    color: #F7D354;
+    color: var(--color-primary);
 }
 
 .movie-page .movies-card {

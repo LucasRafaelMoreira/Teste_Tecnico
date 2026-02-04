@@ -1,12 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { BsGraphUp, BsWallet2, BsHourglassSplit, BsFillFileEarmarkTextFill, BsCalendar, BsFilm } from "react-icons/bs";
 import { ImFilm } from "react-icons/im";
 import ReactPlayer from 'react-player';
 
 import MoviesCard from "../components/MoviesCard";
-
-import '../css/Movie.css';
+import styles from '../css/Movie.module.scss';
 import type { MovieDetails, VideosResponse } from "../types/MovieTypes";
 
 const moviesURL = import.meta.env.VITE_API;
@@ -88,57 +87,52 @@ const Movie = () => {
     fetchData();
   }, [id]);
 
-  if (loading) return <div className="loading">Carregando...</div>;
-  if (error) return <div className="error">Erro: {error}</div>;
-  if (!movie) return <div className="error">Filme não encontrado</div>;
+  if (loading) return <div className={styles.loading}>Carregando...</div>;
+  if (error) return <div className={styles.error}>Erro: {error}</div>;
+  if (!movie) return <div className={styles.error}>Filme não encontrado</div>;
 
   return (
-    <div className="movie-page">
+    <div className={styles['movie-page']}>
       {movie && <>
         <MoviesCard movie={movie} showLink={false} />
-        <p className="tagline">{movie.tagline}</p>
-        <div className="info">
+        <p className={styles.tagline}>{movie.tagline}</p>
+        <div className={styles.info}>
           <h3>
             <BsWallet2 /> Orçamento:
           </h3>
           <p>{formatCurrency(movie.budget)}</p>
         </div>
-        <div className="info">
+        <div className={styles.info}>
           <h3>
             <BsGraphUp /> Receita:
           </h3>
           <p>{formatCurrency(movie.revenue)}</p>
         </div>
-        <div className="info">
+        <div className={styles.info}>
           <h3>
             <BsHourglassSplit /> Duração:
           </h3>
           <p>{movie.runtime} minutos</p>
         </div>
-        <div className="info">
-          <h3>
-            <BsCalendar /> Data de lançamento:
-          </h3>
-          <p>{formatDate(movie.release_date)}</p>
-        </div>
-        <div className="info">
+
+        <div className={styles.info}>
           <h3>
             <BsFilm /> Gênero:
           </h3>
           <p>{movie.genres.map((genre) => genre.name).join(', ')}</p>
         </div>
-        <div className="info">
+        <div className={styles.info}>
           <h3>
             <BsFillFileEarmarkTextFill /> Sinopse:
           </h3>
           <p>{movie.overview}</p>
         </div>
-        <div className="info">
+        <div className={styles.info}>
           <h3>
             <ImFilm /> Trailer:
           </h3>
           {trailer && (
-            <div className="custom-player-container">
+            <div className={styles['custom-player-container']}>
               <ReactPlayer 
                 src={isLocalTrailer ? trailer : `https://www.youtube.com/watch?v=${trailer}`}
                 width={'100%'} 

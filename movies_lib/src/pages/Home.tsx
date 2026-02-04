@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import MoviesCard from "../components/MoviesCard";
 
-import '../css/MovieGrid.css'
+import styles from '../css/MovieGrid.module.scss'
 import type { Movie } from "../types/MovieTypes";
 
 const moviesURL = import.meta.env.VITE_API;
@@ -35,11 +35,11 @@ const Home = () => {
   }, [])
 
   return (
-    <div className="container">
-      <h2 className="title">Melhores filmes:</h2>
-      <div className="movies-container">
+    <div className={styles.container}>
+      <h2 className={styles.title}>Melhores filmes:</h2>
+      <div className={styles['movies-container']}>
         {loading && <p>Carregando...</p>}
-        {error && <p className="error">Erro: {error}</p>}
+        {error && <p className={styles.error}>Erro: {error}</p>}
         {!loading && !error && topMovies.map((movie) => (
           <MoviesCard key={movie.id} movie={movie} showLink={true} />
         ))}

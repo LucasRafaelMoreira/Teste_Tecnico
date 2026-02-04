@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { FaStar } from 'react-icons/fa'
 import type { MoviesCardProps } from "../types/MovieTypes";
+import styles from '../css/Movie.module.scss'
 
 const imageUrl = import.meta.env.VITE_IMG;
 
@@ -11,7 +12,7 @@ const formatDate = (dateString: string) => {
 
 const MoviesCard = ({ movie, showLink = true }: MoviesCardProps) => {
   return (
-    <div className="movies-card">
+    <div className={styles['movies-card']}>
       <img src={`${imageUrl + movie.poster_path}`} alt={movie.title} />
       <h2>{movie.title}</h2>
       <p>
@@ -21,7 +22,6 @@ const MoviesCard = ({ movie, showLink = true }: MoviesCardProps) => {
         <FaStar /> {movie.vote_average}
       </p>
       {showLink && <Link to={`/movie/${movie.id}`}>Detalhes</Link>}
-
     </div>
   )
 }
