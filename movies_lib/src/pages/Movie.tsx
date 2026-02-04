@@ -7,11 +7,11 @@ import ReactPlayer from 'react-player';
 import MoviesCard from "../components/MoviesCard";
 
 import '../css/Movie.css';
+import type { MovieDetails, VideosResponse } from "../types/MovieTypes";
 
 const moviesURL = import.meta.env.VITE_API;
 const apiKey = import.meta.env.VITE_API_KEY;
 
-// Mapeamento de vídeos locais
 const localTrailers: { [key: string]: string } = {
   '238': '/videos/O-Poderoso-Chefao.mp4',
   '240': '/videos/O-Poderoso-Chefao-2.mp4',
@@ -21,32 +21,45 @@ const localTrailers: { [key: string]: string } = {
 const Movie = () => {
 
   const { id } = useParams();
-  const [movie, setMovie] = useState<any>(null);
+  const [movie, setMovie] = useState<MovieDetails | null>(null);
   const [trailer, setTrailer] = useState<string | null>(null);
   const [isLocalTrailer, setIsLocalTrailer] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const getMovie = async (url: RequestInfo | URL) => {
-
-    const res = await fetch(url);
-    const data = await res.json();
-
-    setMovie(data);
+    try {
+      const res = await fetch(url);
+      if (!res.ok) {
+        throw new Error('Erro ao buscar filme');
+      }
+      const data: MovieDetails = await res.json();
+      setMovie(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erro desconhecido');
+    }
   };
 
   const getTrailer = async (url: RequestInfo | URL) => {
-    // Verifica se o filme tem um trailer local
     if (id && localTrailers[id]) {
       setTrailer(localTrailers[id]);
       setIsLocalTrailer(true);
       return;
     }
 
-    const res = await fetch(url);
-    const data = await res.json();
+    try {
+      const res = await fetch(url);
+      if (!res.ok) { 
+        throw new Error('Erro ao buscar trailer');
+      }
+      const data: VideosResponse = await res.json();
 
-    if (data.results && data.results.length > 0) {
-      setTrailer(data.results[0].key);
-      setIsLocalTrailer(false);
+      if (data.results && data.results.length > 0) {
+        setTrailer(data.results[0].key);
+        setIsLocalTrailer(false);
+      }
+    } catch (err) {
+      console.error('Erro ao buscar trailer:', err);
     }
   };
 
@@ -63,13 +76,21 @@ const Movie = () => {
   }
 
   useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const movieUrl = `${moviesURL}${id}?${apiKey}&language=pt-BR`;
+      const trailerUrl = `${import.meta.env.VITE_VD}${id}/videos?${apiKey}&language=pt-BR`;
+      await getMovie(movieUrl);
+      await getTrailer(trailerUrl);
+      setLoading(false);
+    };
 
-    const movieUrl = `${moviesURL}${id}?${apiKey}&language=pt-BR`;
-    const trailerUrl = `${import.meta.env.VITE_VD}${id}/videos?${apiKey}&language=pt-BR`;
-    getMovie(movieUrl);
-    getTrailer(trailerUrl);
+    fetchData();
+  }, [id]);
 
-  }, []);
+  if (loading) return <div className="loading">Carregando...</div>;
+  if (error) return <div className="error">Erro: {error}</div>;
+  if (!movie) return <div className="error">Filme não encontrado</div>;
 
   return (
     <div className="movie-page">
@@ -104,7 +125,7 @@ const Movie = () => {
           <h3>
             <BsFilm /> Gênero:
           </h3>
-          <p>{movie.genres.map((genre: any) => genre.name).join(', ')}</p>
+          <p>{movie.genres.map((genre) => genre.name).join(', ')}</p>
         </div>
         <div className="info">
           <h3>
@@ -121,7 +142,7 @@ const Movie = () => {
               <ReactPlayer 
                 src={isLocalTrailer ? trailer : `https://www.youtube.com/watch?v=${trailer}`}
                 width={'100%'} 
-                height={'100%'}
+                height={'auto'}
                 controls={true}
                 style={{ aspectRatio: '16/9' }}
               />

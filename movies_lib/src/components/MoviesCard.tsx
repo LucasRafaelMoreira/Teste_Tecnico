@@ -1,22 +1,8 @@
 import { Link } from "react-router-dom"
-
 import { FaStar } from 'react-icons/fa'
-import { BsCalendar } from 'react-icons/bs'
+import type { MoviesCardProps } from "../types/MovieTypes";
 
 const imageUrl = import.meta.env.VITE_IMG;
-
-interface Movie {
-  poster_path: string;
-  title: string;
-  vote_average: number;
-  id: number;
-  release_date: string;
-}
-
-interface MoviesCardProps {
-  movie: Movie;
-  showLink?: boolean;
-}
 
 const formatDate = (dateString: string) => {
   const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };

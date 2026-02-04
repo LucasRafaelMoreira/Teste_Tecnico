@@ -6,13 +6,7 @@ const searchURL = import.meta.env.VITE_SEARCH;
 const apiKey = import.meta.env.VITE_API_KEY
 
 import '../css/MovieGrid.css'
-
-interface Movie {
-  id: number;
-  title: string;
-  poster_path: string;
-  vote_average: number;
-}
+import type { Movie } from "../types/MovieTypes";
 
 const Search = () => {
 
