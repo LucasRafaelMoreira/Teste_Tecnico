@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { BsGraphUp, BsWallet2, BsHourglassSplit, BsFillFileEarmarkTextFill, BsCalendar, BsFilm } from "react-icons/bs";
 import { ImFilm } from "react-icons/im";
@@ -11,11 +11,19 @@ import '../css/Movie.css';
 const moviesURL = import.meta.env.VITE_API;
 const apiKey = import.meta.env.VITE_API_KEY;
 
+// Mapeamento de vídeos locais
+const localTrailers: { [key: string]: string } = {
+  '238': '/videos/O-Poderoso-Chefao.mp4',
+  '240': '/videos/O-Poderoso-Chefao-2.mp4',
+  '278': '/videos/Um-Sonho-de-Liberdade.mp4'
+};
+
 const Movie = () => {
 
   const { id } = useParams();
   const [movie, setMovie] = useState<any>(null);
-  const [trailer, setTrailer] = useState<any>(null);
+  const [trailer, setTrailer] = useState<string | null>(null);
+  const [isLocalTrailer, setIsLocalTrailer] = useState<boolean>(false);
 
   const getMovie = async (url: RequestInfo | URL) => {
 
@@ -26,12 +34,20 @@ const Movie = () => {
   };
 
   const getTrailer = async (url: RequestInfo | URL) => {
+    // Verifica se o filme tem um trailer local
+    if (id && localTrailers[id]) {
+      setTrailer(localTrailers[id]);
+      setIsLocalTrailer(true);
+      return;
+    }
 
     const res = await fetch(url);
     const data = await res.json();
 
-    // setTrailer(data);
-    setTrailer(`https://www.youtube.com/watch?v=${data.results[0]?.key}`);
+    if (data.results && data.results.length > 0) {
+      setTrailer(data.results[0].key);
+      setIsLocalTrailer(false);
+    }
   };
 
   const formatCurrency = (number: number) => {
@@ -100,7 +116,17 @@ const Movie = () => {
           <h3>
             <ImFilm /> Trailer:
           </h3>
-          {trailer && <ReactPlayer src={trailer} controls={true} width="100%" height="400px" />}
+          {trailer && (
+            <div className="custom-player-container">
+              <ReactPlayer 
+                src={isLocalTrailer ? trailer : `https://www.youtube.com/watch?v=${trailer}`}
+                width={'100%'} 
+                height={'100%'}
+                controls={true}
+                style={{ aspectRatio: '16/9' }}
+              />
+            </div>
+          )}
         </div>
       </>}
     </div>
