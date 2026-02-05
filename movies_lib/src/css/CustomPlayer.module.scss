@@ -1,0 +1,228 @@
+.playerWrapper {
+  position: relative;
+  padding-top: 56.25%; /* Aspect ratio 16:9 */
+  background-color: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+
+  &:fullscreen {
+    padding-top: 0;
+    height: 100vh;
+  }
+}
+
+.controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 50%, transparent 100%);
+  padding: 40px 12px 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+
+  &.show {
+    opacity: 1;
+  }
+}
+
+.progressBar {
+  position: relative;
+  width: 100%;
+  height: 5px;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin-bottom: 12px;
+  cursor: pointer;
+  border-radius: 2px;
+  overflow: visible;
+
+  &:hover {
+    height: 7px;
+  }
+
+  input[type="range"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+  }
+}
+
+.progressFilled {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: var(--color-primary);
+  pointer-events: none;
+  border-radius: 2px;
+  transition: width 0.1s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    background-color: var(--color-primary);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+}
+
+.progressBar:hover .progressFilled::after {
+  opacity: 1;
+}
+
+.controlsBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.leftControls,
+.rightControls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+button {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  svg {
+    font-size: 24px;
+  }
+}
+
+.playButton svg {
+  font-size: 28px;
+}
+
+.volumeControl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+  .volumeButton {
+    svg {
+      font-size: 22px;
+    }
+  }
+}
+
+.volumeSlider {
+  width: 0;
+  opacity: 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  outline: none;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+
+  &::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+}
+
+.volumeControl:hover .volumeSlider {
+  width: 80px;
+  opacity: 1;
+}
+
+.time {
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.fullscreenButton {
+  svg {
+    font-size: 20px;
+  }
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .controls {
+    padding: 30px 8px 8px;
+  }
+
+  button {
+    padding: 6px;
+
+    svg {
+      font-size: 20px;
+    }
+  }
+
+  .playButton svg {
+    font-size: 24px;
+  }
+
+  .time {
+    font-size: 12px;
+  }
+
+  .volumeSlider {
+    display: none;
+  }
+}

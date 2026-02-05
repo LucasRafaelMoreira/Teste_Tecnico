@@ -1,0 +1,58 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 3rem 0 2rem;
+  flex-wrap: wrap;
+}
+
+.pageButton,
+.arrow {
+  min-width: 40px;
+  height: 40px;
+  padding: 8px 12px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.pageButton.active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.ellipsis {
+  color: var(--text-secondary);
+  padding: 0 8px;
+  user-select: none;
+}
+
+@media (max-width: 768px) {
+  .pagination {
+    gap: 6px;
+    margin: 2rem 0 1rem;
+  }
+
+  .pageButton,
+  .arrow {
+    min-width: 36px;
+    height: 36px;
+    font-size: 13px;
+  }
+}

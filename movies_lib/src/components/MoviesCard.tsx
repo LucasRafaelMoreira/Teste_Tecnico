@@ -15,9 +15,7 @@ const MoviesCard = ({ movie, showLink = true }: MoviesCardProps) => {
     <div className={styles['movies-card']}>
       <img src={`${imageUrl + movie.poster_path}`} alt={movie.title} />
       <h2>{movie.title}</h2>
-      <p>
-        <p>{formatDate(movie.release_date)}</p>
-      </p>
+      <p>{formatDate(movie.release_date)}</p>
       <p>
         <FaStar /> {movie.vote_average}
       </p>

@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { BsGraphUp, BsWallet2, BsHourglassSplit, BsFillFileEarmarkTextFill, BsCalendar, BsFilm } from "react-icons/bs";
 import { ImFilm } from "react-icons/im";
-import ReactPlayer from 'react-player';
 
 import MoviesCard from "../components/MoviesCard";
+import CustomPlayer from "../components/CustomPlayer";
 import styles from '../css/Movie.module.scss';
 import type { MovieDetails, VideosResponse } from "../types/MovieTypes";
 
@@ -132,15 +132,7 @@ const Movie = () => {
             <ImFilm /> Trailer:
           </h3>
           {trailer && (
-            <div className={styles['custom-player-container']}>
-              <ReactPlayer 
-                src={isLocalTrailer ? trailer : `https://www.youtube.com/watch?v=${trailer}`}
-                width={'100%'} 
-                height={'auto'}
-                controls={true}
-                style={{ aspectRatio: '16/9' }}
-              />
-            </div>
+            <CustomPlayer url={trailer} isLocal={isLocalTrailer} />
           )}
         </div>
       </>}

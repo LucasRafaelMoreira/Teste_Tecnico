@@ -33,3 +33,8 @@ export interface Video {
 export interface VideosResponse {
   results: Video[];
 }
+
+export interface CustomPlayerProps {
+  url: string;
+  isLocal: boolean;
+}
