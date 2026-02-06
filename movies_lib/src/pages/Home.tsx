@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import MoviesCard from "../components/MoviesCard";
 import Pagination from "../components/Pagination";
+import SkeletonCard from "../components/SkeletonCard";
 
 import styles from '../css/MovieGrid.module.scss'
 import type { Movie } from "../types/MovieTypes";
@@ -20,6 +21,7 @@ const Home = () => {
   const getTopRatedMovies = async (url: RequestInfo | URL) => {
     try {
       setLoading(true);
+      await new Promise(resolve => setTimeout(resolve, 2000)); // Delay para testar skeleton
       const res = await fetch(url);
       if (!res.ok) {
         throw new Error('Erro ao buscar filmes');
@@ -44,7 +46,9 @@ const Home = () => {
     <div className={styles.container}>
       <h2 className={styles.title}>Melhores filmes:</h2>
       <div className={styles['movies-container']}>
-        {loading && <p>Carregando...</p>}
+        {loading && Array.from({ length: 6 }).map((_, index) => (
+          <SkeletonCard key={index} />
+        ))}
         {error && <p className={styles.error}>Erro: {error}</p>}
         {!loading && !error && topMovies.map((movie) => (
           <MoviesCard key={movie.id} movie={movie} showLink={true} />

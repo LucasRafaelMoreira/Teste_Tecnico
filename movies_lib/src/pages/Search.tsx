@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import MoviesCard from "../components/MoviesCard";
 import Pagination from "../components/Pagination";
+import SkeletonCard from "../components/SkeletonCard";
 
 const searchURL = import.meta.env.VITE_SEARCH;
 const apiKey = import.meta.env.VITE_API_KEY
@@ -23,6 +24,7 @@ const Search = () => {
   const getSearchedMovies = async (url: RequestInfo | URL) => {
     try {
       setLoading(true);
+      await new Promise(resolve => setTimeout(resolve, 2000)); // Delay para testar skeleton
       const res = await fetch(url);
       if (!res.ok) {
         throw new Error('Erro ao buscar filmes');
@@ -52,7 +54,9 @@ const Search = () => {
     <div className={styles.container}>
       <h2 className={styles.title}>Resultados para: <span className={styles['query-text']}>{query}</span></h2>
       <div className={styles['movies-container']}>
-        {loading && <p>Carregando...</p>}
+        {loading && Array.from({ length: 6 }).map((_, index) => (
+          <SkeletonCard key={index} />
+        ))}
         {error && <p className={styles.error}>Erro: {error}</p>}
         {!loading && !error && movies.length === 0 && <p>Nenhum resultado encontrado</p>}
         {!loading && !error && movies.map((movie) => (
