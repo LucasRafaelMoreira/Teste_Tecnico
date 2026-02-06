@@ -136,7 +136,7 @@ const CustomPlayer = ({ url, isLocal }: CustomPlayerProps) => {
                 }}
                 width="100%"
                 height="100%"
-                style={{ position: 'absolute', top: 0, left: 0 }}
+                style={{ position: 'absolute', top: 0, left: 0, pointerEvents: isLocal ? 'auto' : 'none' }}
             />
 
             <div className={`${styles.controls} ${showControls ? styles.show : ''}`} onClick={(e) => e.stopPropagation()}>
