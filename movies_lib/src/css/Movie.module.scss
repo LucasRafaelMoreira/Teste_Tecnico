@@ -33,6 +33,22 @@
     gap: 0.4rem;
 }
 
+.movie-page .movies-card p > span:first-child:has(svg) {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.movie-page .movies-card p:has(button) {
+    position: relative;
+    justify-content: center;
+    
+    button {
+        position: absolute;
+        right: 0;
+    }
+}
+
 .tagline {
     text-align: center;
     font-size: 1.3rem;

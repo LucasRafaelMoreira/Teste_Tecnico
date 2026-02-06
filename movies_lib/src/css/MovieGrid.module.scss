@@ -34,13 +34,21 @@
     padding: 1rem;
 }
 
+.movies-container div .rating-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
 .movies-container div img {
     max-width: 100%;
+    margin-bottom: 1rem;
 }
 
 .movies-container div img,
 .movies-container div h2,
-.movies-container div p{
+.movies-container div p {
     margin-bottom: 1rem;
 }
 

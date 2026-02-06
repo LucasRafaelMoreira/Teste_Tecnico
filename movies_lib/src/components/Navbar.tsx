@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import { BiSearchAlt2 } from "react-icons/bi"
 import { MdLocalMovies } from "react-icons/md"
+import { BsHeart } from "react-icons/bs"
 import ThemeToggle from "./ThemeToggle"
 import { useTheme } from "../hooks/useTheme"
 
@@ -27,6 +28,9 @@ const Navbar = () => {
                 <Link to="/"><MdLocalMovies /> CineVault </Link>
             </h2>
             <div className={styles.navActions}>
+                <Link to="/favorites" className={styles.favoritesLink} title="Meus Favoritos">
+                    <BsHeart />
+                </Link>
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <input 
                         className={styles.input}
