@@ -4,6 +4,14 @@
     flex-direction: column;
     max-width: 600px;
     margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+@media (max-width: 768px) {
+    .movie-page {
+        margin: 1rem auto;
+        padding: 0 0.5rem;
+    }
 }
 
 .movie-page svg {
@@ -24,6 +32,12 @@
 
 .movie-page .movies-card h2 {
     font-size: 2rem;
+}
+
+@media (max-width: 768px) {
+    .movie-page .movies-card h2 {
+        font-size: 1.5rem;
+    }
 }
 
 .movie-page .movies-card p {
@@ -53,6 +67,35 @@
     text-align: center;
     font-size: 1.3rem;
     margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+    .tagline {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .movie-page {
+        padding: 0;
+    }
+
+    .movie-page .movies-card h2 {
+        font-size: 1.3rem;
+    }
+
+    .tagline {
+        font-size: 0.9rem;
+    }
+
+    .info h3 {
+        font-size: 1rem;
+    }
+
+    .movie-page svg {
+        font-size: 1.2rem;
+    }
 }
 
 .info {

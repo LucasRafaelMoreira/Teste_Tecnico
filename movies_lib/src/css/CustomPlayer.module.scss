@@ -206,6 +206,15 @@ button {
     padding: 30px 8px 8px;
   }
 
+  .controlsBottom {
+    gap: 8px;
+  }
+
+  .leftControls,
+  .rightControls {
+    gap: 8px;
+  }
+
   button {
     padding: 6px;
 
@@ -222,7 +231,7 @@ button {
     font-size: 12px;
   }
 
-  .volumeSlider {
+  .volumeControl {
     display: none;
   }
 }

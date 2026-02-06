@@ -48,6 +48,12 @@
   margin-top: auto;
 }
 
+@media (max-width: 1024px) {
+  .skeleton {
+    width: calc(50% - 1rem);
+  }
+}
+
 @media (max-width: 768px) {
   .skeleton {
     width: 100%;

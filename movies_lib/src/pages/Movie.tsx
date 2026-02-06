@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { BsGraphUp, BsWallet2, BsHourglassSplit, BsFillFileEarmarkTextFill, BsCalendar, BsFilm } from "react-icons/bs";
+import { BsGraphUp, BsWallet2, BsHourglassSplit, BsFillFileEarmarkTextFill, BsFilm } from "react-icons/bs";
 import { ImFilm } from "react-icons/im";
 
 import MoviesCard from "../components/MoviesCard";
@@ -67,11 +67,6 @@ const Movie = () => {
       style: "currency",
       currency: "BRL",
     });
-  }
-
-  const formatDate = (dateString: string) => {
-    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('pt-BR', options);
   }
 
   useEffect(() => {

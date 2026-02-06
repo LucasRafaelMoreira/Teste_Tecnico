@@ -9,6 +9,13 @@
     margin: 2rem 0 1rem;
 }
 
+@media (max-width: 768px) {
+    .container .title {
+        font-size: 1.8rem;
+        margin: 1rem 0 0.5rem;
+    }
+}
+
 .title .query-text{
     color: var(--color-primary);
 }
@@ -21,6 +28,13 @@
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .movies-container {
+        gap: 1.5rem;
+        padding: 1rem;
+    }
 }
 
 .movies-container div {
@@ -75,4 +89,27 @@
 
 .error {
     color: var(--color-secondary);
+}
+
+@media (max-width: 1024px) {
+    .movies-container div {
+        width: calc(50% - 1rem);
+    }
+}
+
+@media (max-width: 768px) {
+    .movies-container div {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .container .title {
+        font-size: 1.5rem;
+    }
+    
+    .movies-container {
+        gap: 1rem;
+        padding: 0.75rem;
+    }
 }
