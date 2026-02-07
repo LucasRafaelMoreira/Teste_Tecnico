@@ -1,45 +1,64 @@
 import { useState, useEffect } from "react";
 import MoviesCard from "../components/MoviesCard";
+import Pagination from "../components/Pagination";
+import SkeletonCard from "../components/SkeletonCard";
 
-import '../css/MovieGrid.css'
+import styles from '../css/MovieGrid.module.scss'
+import type { Movie } from "../types/MovieTypes";
 
 const moviesURL = import.meta.env.VITE_API;
 const apiKey = import.meta.env.VITE_API_KEY;
 
-interface Movie {
-  id: number;
-  title: string;
-  poster_path: string;
-  vote_average: number;
-}
 
 const Home = () => {
 
-  const [topMovies, setTopMovies] = useState<Array<Movie>>([]);
+  const [topMovies, setTopMovies] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  
   const getTopRatedMovies = async (url: RequestInfo | URL) => {
-
-    const res = await fetch(url);
-    const data = await res.json();
-
-    setTopMovies(data.results);
+    try {
+      setLoading(true);
+      await new Promise(resolve => setTimeout(resolve, 2000)); // Delay para testar skeleton
+      const res = await fetch(url);
+      if (!res.ok) {
+        throw new Error('Erro ao buscar filmes');
+      }
+      const data = await res.json();
+      setTopMovies(data.results);
+      setTotalPages(Math.min(data.total_pages, 500)); // API limita a 500 páginas
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erro desconhecido');
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-
-    const topRatedUrl = `${moviesURL}top_rated?${apiKey}&language=pt-BR&page=1`;
+    const topRatedUrl = `${moviesURL}top_rated?${apiKey}&language=pt-BR&page=${currentPage}`;
     getTopRatedMovies(topRatedUrl);
-  }, [])
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentPage])
 
   return (
-    <div className="container">
-      <h2 className="title">Melhores filmes:</h2>
-      <div className="movies-container">
-        {topMovies.length === 0 && <p>Carregando...</p>}
-        {topMovies.length > 0 && topMovies.map((movie) => (
+    <div className={styles.container}>
+      <h2 className={styles.title}>Melhores filmes:</h2>
+      <div className={styles['movies-container']}>
+        {loading && Array.from({ length: 6 }).map((_, index) => (
+          <SkeletonCard key={index} />
+        ))}
+        {error && <p className={styles.error}>Erro: {error}</p>}
+        {!loading && !error && topMovies.map((movie) => (
           <MoviesCard key={movie.id} movie={movie} showLink={true} />
         ))}
       </div>
-
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   )
 }
